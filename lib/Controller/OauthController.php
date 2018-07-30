@@ -75,8 +75,8 @@ class OauthController extends Controller {
 		$step,
 		$code
 	) {
-		$clientId = $client_id;
-		$clientSecret = $client_secret;
+		$clientId = getenv('MLVX_DROPBOX_CLIENT_ID');
+		$clientSecret = getenv('MLVX_DROPBOX_CLIENT_SECRET');
 		if ($clientId !== null && $clientSecret !== null && $redirect !== null) {
 			$app = new \Kunnu\Dropbox\DropboxApp($clientId, $clientSecret);
 			$dropbox = new \Kunnu\Dropbox\Dropbox($app);

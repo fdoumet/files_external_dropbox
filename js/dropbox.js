@@ -21,8 +21,8 @@ $(document).ready(function () {
 				if ($(configured).val() == 'true') {
 					displayGranted($tr);
 				} else {
-					var client_id = $tr.find('.configuration [data-parameter="client_id"]').val();
-					var client_secret = $tr.find('.configuration [data-parameter="client_secret"]').val();
+					var client_id = 'dummy_id';
+					var client_secret = 'dummy_secret';
 
 					var params = {};
 					window.location.href.replace(/[?&]+([^=&]+)=([^&]*)/gi, function (m, key, value) {
@@ -54,8 +54,8 @@ $(document).ready(function () {
 	$('#externalStorage').on('click', '[name="oauth2_grant_dropbox"]', function (event) {
 		event.preventDefault();
 		var tr = $(this).parent().parent();
-		var client_id = $(this).parent().find('[data-parameter="client_id"]').val();
-		var client_secret = $(this).parent().find('[data-parameter="client_secret"]').val();
+		var client_id = "dummy_id";
+		var client_secret = "dummy_secret";
 
 		if (client_id !== '' && client_secret !== '') {
 			$('.configuration').trigger('oauth_step1', [{
