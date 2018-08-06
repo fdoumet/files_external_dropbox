@@ -124,8 +124,8 @@ class OauthController extends Controller {
 	 */
 	public function handleSave($id) {
 		$data = file_get_contents('php://input');
-		$data = str_replace("dummy_id", getenv('MLVX_GDRIVE_CLIENT_ID'),$data);
-		$data = str_replace("dummy_secret", getenv('MLVX_GDRIVE_CLIENT_SECRET'),$data);
+		$data = str_replace("dummy_id", getenv('MLVX_DROPBOX_CLIENT_ID'),$data);
+		$data = str_replace("dummy_secret", getenv('MLVX_DROPBOX_CLIENT_SECRET'),$data);
 
 		$decodedData = json_decode($data, true);
 		return $this->userStoragesController->update($decodedData['id'],$decodedData['mountPoint'],$decodedData['backend'],$decodedData['authMechanism'],$decodedData['backendOptions'],$decodedData['mountOptions']);
