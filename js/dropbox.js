@@ -1,7 +1,7 @@
 $(document).ready(function () {
 	var backendId = 'files_external_dropbox';
 	var backendUrl = OC.generateUrl('apps/' + backendId + '/oauth');
-	var configUrl = OC.generateUrl('apps/' + backendId + '/userstorages');
+	var updateUrl = OC.generateUrl('apps/' + backendId + '/userstorages');
 
 	function displayGranted ($tr) {
 		$tr.find('.configuration input.auth-param').attr('disabled', 'disabled').addClass('disabled-success');
@@ -220,9 +220,9 @@ function saveStorageConfig ($tr, callback, concurrentTimer) {
 }
 
 function saveConfig (config, options){
-	var url = OC.generateUrl(configUrl);
+	var url = OC.generateUrl(updateUrl);
 	if (_.isNumber(config.id)) {
-		url = OC.generateUrl(configUrl + '/{id}', {id: config.id});
+		url = OC.generateUrl(updateUrl + '/{id}', {id: config.id});
 	}
 
 	$.ajax({
