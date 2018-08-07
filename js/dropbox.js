@@ -73,7 +73,7 @@ $(document).ready(function () {
 			return false;	// means the trigger is not for this storage adapter
 		}
 
-		OCA.External.Settings.OAuth2.getAuthUrl(backendUrl, data);
+		OCA.External.Settings.OAuth2_Dropbox.getAuthUrl(backendUrl, data);
 	});
 
 	$('.configuration').on('oauth_step2', function (event, data) {
@@ -81,7 +81,7 @@ $(document).ready(function () {
 			return false;		// means the trigger is not for this OAuth2 grant
 		}
 
-		OCA.External.Settings.OAuth2.verifyCode(backendUrl, data)
+		OCA.External.Settings.OAuth2_Dropbox.verifyCode(backendUrl, data)
 			.fail(function (message) {
 				OC.dialogs.alert(message,
 					t(backendId, 'Error verifying OAuth2 Code for ' + backendId)
@@ -94,7 +94,7 @@ $(document).ready(function () {
  * @namespace OAuth2 namespace which is used to verify a storage adapter
  *            using AuthMechanism as oauth2::oauth2
  */
-OCA.External.Settings.OAuth2 = OCA.External.Settings.OAuth2 || {};
+OCA.External.Settings.OAuth2_Dropbox = OCA.External.Settings.OAuth2 || {};
 
 /**
  * This function sends a request to the given backendUrl and gets the OAuth2 URL
@@ -104,7 +104,7 @@ OCA.External.Settings.OAuth2 = OCA.External.Settings.OAuth2 || {};
  * @param  {String}   backendUrl The backend URL to which request will be sent
  * @param  {Object}   data       Keys -> (backend_id, client_id, client_secret, redirect, tr)
  */
-OCA.External.Settings.OAuth2.getAuthUrl = function (backendUrl, data) {
+OCA.External.Settings.OAuth2_Dropbox.getAuthUrl = function (backendUrl, data) {
 	$('.configuration [data-parameter="client_id"]').val("dummy_id");
 	$('.configuration [data-parameter="client_secret"]').val("dummy_secret");
 
@@ -149,7 +149,7 @@ OCA.External.Settings.OAuth2.getAuthUrl = function (backendUrl, data) {
  * @param  {Object}   data       Keys -> (backend_id, client_id, client_secret, redirect, tr, code)
  * @return {Promise} jQuery Deferred Promise object
  */
-OCA.External.Settings.OAuth2.verifyCode = function (backendUrl, data) {
+OCA.External.Settings.OAuth2_Dropbox.verifyCode = function (backendUrl, data) {
 	$('.configuration [data-parameter="client_id"]').val("dummy_id");
 	$('.configuration [data-parameter="client_secret"]').val("dummy_secret");
 
@@ -172,7 +172,7 @@ OCA.External.Settings.OAuth2.verifyCode = function (backendUrl, data) {
 				$(token).val(result.data.token);
 				$(configured).val('true');
 
-				saveStorageConfig($tr, function (status) {
+				OCA.External.Settings.OAuth2_Dropbox.saveStorageConfig($tr, function (status) {
 					if (status) {
 						$tr.find('.configuration input.auth-param')
 							.attr('disabled', 'disabled')
@@ -188,14 +188,14 @@ OCA.External.Settings.OAuth2.verifyCode = function (backendUrl, data) {
 	return deferredObject.promise();
 };
 
-function saveStorageConfig ($tr, callback, concurrentTimer) {
+OCA.External.Settings.OAuth2_Dropbox.saveStorageConfig = function ($tr, callback, concurrentTimer) {
 	var storage = OCA.External.Settings.mountConfig.getStorageConfig($tr);
 	if (!storage || !storage.validate()) {
 		return false;
 	}
 
 	OCA.External.Settings.mountConfig.updateStatus($tr, -1);
-	saveConfig(storage,{
+	OCA.External.Settings.OAuth2_Dropbox.saveConfig(storage,{
 		success: function(result) {
 			if (concurrentTimer === undefined
 				|| $tr.data('save-timer') === concurrentTimer
@@ -218,8 +218,8 @@ function saveStorageConfig ($tr, callback, concurrentTimer) {
 	});
 }
 
-function saveConfig (config, options){
-	var configUrl = config._url.replace("files_external", "files_external_gdrive");
+OCA.External.Settings.OAuth2_Dropbox.saveConfig = function (config, options){
+	var configUrl = config._url.replace("files_external", "files_external_dropbox");
 	var url = OC.generateUrl(configUrl);
 	var method = 'POST';
 	if (_.isNumber(config.id)) {
